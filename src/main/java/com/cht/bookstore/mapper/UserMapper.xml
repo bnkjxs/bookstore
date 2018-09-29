@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间应该是对应接口的包名+接口名 -->
+<mapper namespace="com.cht.bookstore.mapper.UserMapper">	
+	<sql id="resultObj">
+		select 
+			id as "id",
+			user_name as "userName",
+			user_pd as "userPD",
+			user_job_num as "userJobNum",
+			user_tel as "userTel",
+			user_state as "userState",
+			company_id as "companyId",
+			role_id as "roleId"
+	</sql>
+	
+	<resultMap type="com.cht.bookstore.entity.User" id="User"/>
+	
+	<select id="getUsers" resultMap="User">
+		<include refid="resultObj"/>
+		from user
+	</select>
+	
+	<select id="getUserByName" parameterType="String" resultMap="User">
+		<include refid="resultObj"/>
+		from user
+		where user_name = #{name}
+	</select>
+	
+	<insert id="addUser" parameterType="User">
+		insert into user (
+			user_name,
+			user_pd,
+			user_job_num,
+			user_tel,
+			user_state,
+			company_id,
+			role_id
+		)values(
+			#{userName,jdbcType=VARCHAR},
+			#{userPD,jdbcType=VARCHAR},
+			#{userJobNum,jdbcType=VARCHAR},
+			#{userTel,jdbcType=VARCHAR},
+			#{userState,jdbcType=VARCHAR},
+			#{companyId,jdbcType=INTEGER},
+			#{roleId,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<update id="updateUser" parameterType="User">
+		update user set
+			user_name = #{userName,jdbcType=VARCHAR},
+			user_pd = #{userPD,jdbcType=VARCHAR},
+			user_job_num = #{userJobNum,jdbcType=VARCHAR},
+			user_tel = #{userTel,jdbcType=VARCHAR},
+			user_state = #{userState,jdbcType=VARCHAR},
+			company_id = #{companyId,jdbcType=INTEGER},
+			role_id = #{roleId,jdbcType=INTEGER}
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteUser" parameterType="User">
+		delete from user where id = #{id}
+	</delete>
+</mapper>
